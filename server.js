@@ -3,9 +3,9 @@ var app = express();
 var PORT = process.env.port || 3000;
 var dt = new Date().toString();
 
-var middlewr = require('/Users/menaka/Desktop/node course/web-server/middleware.js');
+//var middlewr = require('/Users/menaka/Desktop/node course/web-server/middleware.js');
 
-app.use(middlewr.logger);
+//app.use(middlewr.logger);
 
 app.get('/', function(req, res) {
 	res.send('To do API');
