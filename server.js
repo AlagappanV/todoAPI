@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var PORT = process.env.port || 3000;
+var PORT = process.env.PORT || 3000;
 var dt = new Date().toString();
 
 //var middlewr = require('/Users/menaka/Desktop/node course/web-server/middleware.js');
