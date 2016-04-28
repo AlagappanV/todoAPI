@@ -3,7 +3,7 @@ var app = express();
 var PORT = process.env.PORT || 3000;
 var dt = new Date().toString();
 
-var middlewr = require('/Users/menaka/Desktop/node course/web-server/middleware.js');
+var middlewr = require('./middleware.js');
 
 app.use(middlewr.logger);
 
