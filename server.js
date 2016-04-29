@@ -38,9 +38,9 @@ app.get('/todo/:id', function(req, res) {
 			matchedvalue = todo;
 		}
 	});
-	console.log('Match' , typeof matchedvalue);
+	//console.log('Match' , typeof matchedvalue);
 	if (typeof matchedvalue === 'undefined'){
-			console.log('Match' , typeof matchedvalue);
+			//console.log('Match' , typeof matchedvalue);
 	
 			res.status(404).send();
 		} else {
