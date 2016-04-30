@@ -17,6 +17,11 @@ var todo = [{
 	id: 3,
 	description: 'Laundry tasks',
 	Completed: true
+},
+{
+	id: 4,
+	description: 'Home Work',
+	Completed: true
 }
 ];
 
@@ -50,7 +55,7 @@ app.get('/todo/:id', function(req, res) {
 
 app.get('/todo', function(req, res) {
 	//res.json('TO DO, ', todo);
-	res.status('TO DO, ').json(todo);
+	res.json(todo);
 });
 
 //console.log(__dirname);
