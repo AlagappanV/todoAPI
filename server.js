@@ -49,7 +49,8 @@ app.get('/todo/:id', function(req, res) {
 });
 
 app.get('/todo', function(req, res) {
-	res.json('TO DO, ', todo);
+	//res.json('TO DO, ', todo);
+	res.status('TO DO, ').json(todo);
 });
 
 //console.log(__dirname);
