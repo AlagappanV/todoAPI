@@ -1,29 +1,13 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 var PORT = process.env.PORT || 3000;
 var dt = new Date().toString();
+var todoNextID = 1;
+var todo = [];
 
-var todo = [{
-	id: 1,
-	description: 'Doctor Appointment',
-	Completed: false
-},
-{
-	id: 2,
-	description: 'Pay Bills',
-	Completed: false
-},
-{
-	id: 3,
-	description: 'Laundry tasks',
-	Completed: true
-},
-{
-	id: 4,
-	description: 'Home Work',
-	Completed: true
-}
-];
+app.use(bodyParser.json());
+
 
 var middlewr = require('./middleware.js');
 
@@ -31,6 +15,19 @@ var middlewr = require('./middleware.js');
 
 app.get('/', middlewr.logger, function(req, res) {
 	res.send('To do API');
+});
+
+app.post('/', function (req, res) {
+	var body = req.body;
+	console.log('In todo');
+	body.id = todoNextID;
+	todoNextID++;
+	
+	//console.log('body ', body);
+	todo.push(body);
+	console.log('todo Length ', todo.length);
+
+	res.json(body);
 });
 
 app.get('/todo/:id', function(req, res) {
@@ -54,7 +51,6 @@ app.get('/todo/:id', function(req, res) {
 });
 
 app.get('/todo', function(req, res) {
-	//res.json('TO DO, ', todo);
 	res.json(todo);
 });
 
