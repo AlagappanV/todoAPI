@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.get('/', middlewr.logger, function(req, res) {
 	res.send('To do API');
 });
-
+// Add API 
 app.post('/', function (req, res) {
 	var body = req.body;
 	// to remove unwanted fields if added through post
@@ -43,7 +43,7 @@ app.get('/todo/:id', function(req, res) {
 			res.json(matchedvalue);
 		}
 });
-
+// Delete API
 app.delete('/todo/:id', function(req, res) {
 	var input = parseInt(req.params.id, 10);
  	var matchedvalue = _.findWhere(todo, {id: input});
@@ -56,9 +56,42 @@ app.delete('/todo/:id', function(req, res) {
 	}
 });
 
+// Update API
+app.put('/todo/:id', function(req, res) {
+var body = req.body;
+var input = parseInt(req.params.id, 10);
+var validAttribute ={};
+var matchedvalue = _.findWhere(todo, {id: input});
+// to remove unwanted fields if added through post
+body = _.pick(req.body, 'status', 'description');
+
+if(!matchedvalue){
+	return res.status(404).send();
+}
+
+if (body.hasOwnProperty('status') && _.isBoolean(body.status)) {
+	validAttribute.status = body.status;
+}
+ else if (body.hasOwnProperty('status')) {
+	return res.status(400).send();
+}
+
+if(body.hasOwnProperty('description') &&  _.isString(body.description)) {
+	validAttribute.description = body.description;
+} else if (body.hasOwnProperty('description')) {
+	return res.status(400).send();
+}
+
+matchedvalue = _.extend(matchedvalue, validAttribute);
+res.json(matchedvalue);
+console.log('Updated Value', matchedvalue);
+
+});
+
+
 app.get('/todo', function(req, res) {
 	res.json(todo);
-	
+
 });
 
 //console.log(__dirname);
