@@ -18,8 +18,9 @@ app.get('/', middlewr.logger, function(req, res) {
 
 app.post('/', function (req, res) {
 	var body = req.body;
+	// to remove unwanted fields if added through post
 	body = _.pick(req.body, 'status', 'description');
-	console.log('body ' , body);
+	//console.log('body ' , body);
 	if(!_.isBoolean(body.status) || !_.isString(body.description)) {
 	console.log('In IF');
 	return res.status(400).send();
@@ -43,8 +44,21 @@ app.get('/todo/:id', function(req, res) {
 		}
 });
 
+app.delete('/todo/:id', function(req, res) {
+	var input = parseInt(req.params.id, 10);
+ 	var matchedvalue = _.findWhere(todo, {id: input});
+	if (!matchedvalue) {
+		res.status(404).json({"error": "No to do ID "});
+	} else {
+	// to Delete
+	todo = _.without(todo, matchedvalue);
+	res.json(matchedvalue);
+	}
+});
+
 app.get('/todo', function(req, res) {
 	res.json(todo);
+	
 });
 
 //console.log(__dirname);
