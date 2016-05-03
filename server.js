@@ -81,16 +81,28 @@ if(body.hasOwnProperty('description') &&  _.isString(body.description)) {
 } else if (body.hasOwnProperty('description')) {
 	return res.status(400).send();
 }
-
+// UPDATING
 matchedvalue = _.extend(matchedvalue, validAttribute);
 res.json(matchedvalue);
 console.log('Updated Value', matchedvalue);
 
 });
 
-
+// Query Params
 app.get('/todo', function(req, res) {
-	res.json(todo);
+	
+	console.log('IN GET QUERY' );
+
+	var queryParams = req.query;
+	var filteredTodos = todo;
+
+	if(queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
+		filteredTodos = _.where(filteredTodos, {status: true})
+	} else if (queryParams.hasOwnProperty('status') && queryParams.status === 'false') {
+		filteredTodos = _.where(filteredTodos, {status: false})
+	} 
+	console.log('TO DO VALUE', filteredTodos) ;
+	res.json(filteredTodos);
 
 });
 
