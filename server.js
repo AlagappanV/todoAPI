@@ -90,10 +90,10 @@ console.log('Updated Value', matchedvalue);
 
 // Query Params
 app.get('/todo', function(req, res) {
-	
-	console.log('IN GET QUERY' );
 
+	console.log('IN GET QUERY' );
 	var queryParams = req.query;
+	 
 	var filteredTodos = todo;
 
 	if(queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
@@ -102,7 +102,15 @@ app.get('/todo', function(req, res) {
 		filteredTodos = _.where(filteredTodos, {status: false})
 	} 
 	console.log('TO DO VALUE', filteredTodos) ;
-	res.json(filteredTodos);
+
+	if(queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
+	//	console.log('IN IF Q P') ;
+	filteredTodos = _.filter(filteredTodos, function (num) {
+	//	console.log('in Query', num);
+		return num.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
+	});
+} 
+		res.json(filteredTodos);
 
 });
 
