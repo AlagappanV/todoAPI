@@ -45,16 +45,28 @@ app.post('/', function(req, res) {
 
 app.get('/todo/:id', function(req, res) {
 	var input = parseInt(req.params.id, 10);
-	var matchedvalue = _.findWhere(todo, {
-		id: input
-	});
-	console.log('Match', matchedvalue);
 
-	if (typeof matchedvalue === 'undefined') {
-		res.status(404).send();
-	} else {
-		res.json(matchedvalue);
-	}
+	db.todo.findById(input).then (function (todo) {
+
+		if(!!todo) {
+			console.log('to do found', todo.toJSON());
+			res.json(todo);
+		} else {
+			console.log('No to do');
+			res.status(500).send();
+		}
+
+	});
+	// var matchedvalue = _.findWhere(todo, {
+	// 	id: input
+	// });
+	// console.log('Match', matchedvalue);
+
+	// if (typeof matchedvalue === 'undefined') {
+	// 	res.status(404).send();
+	// } else {
+	// 	res.json(matchedvalue);
+	// }
 });
 // Delete API
 app.delete('/todo/:id', function(req, res) {
