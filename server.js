@@ -124,6 +124,21 @@ app.get('/todo', function(req, res) {
 	console.log('IN GET QUERY');
 	var queryParams = req.query;
 
+	var where = {};
+
+	// if (queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
+	//  	where.status = 'true';
+	// } else if (queryParams.hasOwnProperty('status') && queryParams.status === 'false') {
+	// 	where.status = 'false';
+	// }
+	 
+	// if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
+	// 	where.description = {
+	// 		$like: '%'+queryParams.q + %;
+	// 	};
+	// }
+	// db.to.findAll({})
+
 	var filteredTodos = todo;
 
 	if (queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
