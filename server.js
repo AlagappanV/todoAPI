@@ -31,16 +31,6 @@ app.post('/', function(req, res) {
 				
 			});
 
-	// //console.log('body ' , body);
-	// if (!_.isBoolean(body.status) || !_.isString(body.description)) {
-	// 	console.log('In IF');
-	// 	return res.status(400).send();
-	// }
-	// body.id = todoNextID;
-	// todoNextID++;
-	// todo.push(body);
-	// res.json(body);
-
 });
 
 app.get('/todo/:id', function(req, res) {
@@ -57,17 +47,9 @@ app.get('/todo/:id', function(req, res) {
 		}
 
 	});
-	// var matchedvalue = _.findWhere(todo, {
-	// 	id: input
-	// });
-	// console.log('Match', matchedvalue);
 
-	// if (typeof matchedvalue === 'undefined') {
-	// 	res.status(404).send();
-	// } else {
-	// 	res.json(matchedvalue);
-	// }
 });
+
 // Delete API
 app.delete('/todo/:id', function(req, res) {
 	var input = parseInt(req.params.id, 10);
@@ -121,47 +103,47 @@ app.put('/todo/:id', function(req, res) {
 // Query Params
 app.get('/todo', function(req, res) {
 
-	console.log('IN GET QUERY');
 	var queryParams = req.query;
 
 	var where = {};
-
-	// if (queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
-	//  	where.status = 'true';
-	// } else if (queryParams.hasOwnProperty('status') && queryParams.status === 'false') {
-	// 	where.status = 'false';
-	// }
-	 
-	// if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
-	// 	where.description = {
-	// 		$like: '%'+queryParams.q + %;
-	// 	};
-	// }
-	// db.to.findAll({})
-
-	var filteredTodos = todo;
+console.log('Query' , queryParams);
 
 	if (queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
-		filteredTodos = _.where(filteredTodos, {
-			status: true
-		})
+		where.status = true ;
 	} else if (queryParams.hasOwnProperty('status') && queryParams.status === 'false') {
-		filteredTodos = _.where(filteredTodos, {
-			status: false
-		})
-	}
-	console.log('TO DO VALUE', filteredTodos);
+		where.status = false ;
+}
+if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
+where.description = {$like: '%' + queryParams.q +'%'};
 
-	if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
-		//	console.log('IN IF Q P') ;
-		filteredTodos = _.filter(filteredTodos, function(num) {
-			//	console.log('in Query', num);
-			return num.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
-		});
-	}
-	res.json(filteredTodos);
+}
+console.log('WHERE' , where);
+	db.todo.findAll({where: where}) . then (function(todo) {
+		res.json(todo);
+	}, function(e)  {
+		res.status(500).send();
+	});
+	// if (queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
+	// 	filteredTodos = _.where(filteredTodos, {
+	// 		status: true
+	// 	})
+	// } else if (queryParams.hasOwnProperty('status') && queryParams.status === 'false') {
+	// 	filteredTodos = _.where(filteredTodos, {
+	// 		status: false
+	// 	})
+	// }
+	// console.log('TO DO VALUE', filteredTodos);
 
-});
+	// if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
+	// 	//	console.log('IN IF Q P') ;
+	// 	filteredTodos = _.filter(filteredTodos, function(num) {
+	// 		//	console.log('in Query', num);
+	// 		return num.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
+	// 	});
+// 	}
+// 	res.json(filteredTodos);
+
+ });
 
 db.sequelize.sync().then(function() {
 app.listen(PORT, function() {
