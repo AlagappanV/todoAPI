@@ -83,31 +83,27 @@ app.put('/todo/:id', function(req, res) {
 	var body = req.body;
 	var input = parseInt(req.params.id, 10);
 	var validAttribute = {};
-	var matchedvalue = _.findWhere(todo, {
-		id: input
-	});
 	// to remove unwanted fields if added through post
 	body = _.pick(req.body, 'status', 'description');
-
-	if (!matchedvalue) {
-		return res.status(404).send();
-	}
-
-	if (body.hasOwnProperty('status') && _.isBoolean(body.status)) {
+	if (body.hasOwnProperty('status')) {
 		validAttribute.status = body.status;
-	} else if (body.hasOwnProperty('status')) {
-		return res.status(400).send();
-	}
-
-	if (body.hasOwnProperty('description') && _.isString(body.description)) {
+	} 
+	if (body.hasOwnProperty('description')) {
 		validAttribute.description = body.description;
-	} else if (body.hasOwnProperty('description')) {
-		return res.status(400).send();
-	}
-	// UPDATING
-	matchedvalue = _.extend(matchedvalue, validAttribute);
-	res.json(matchedvalue);
-	console.log('Updated Value', matchedvalue);
+	} 
+	db.todo.findById(input).then( function(todo){
+		if (todo) {
+			todo.update(validAttribute);
+		} else {
+			res.status(404).send();
+		}
+	}, function() {
+		res.status(500).send();
+	}). then (function(todo) {
+		//res.json(todo.toJSON());
+	}, function (e){
+		res.status(400).json(e);
+	});
 
 });
 
