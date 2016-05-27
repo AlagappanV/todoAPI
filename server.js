@@ -56,15 +56,26 @@ app.delete('/todo/:id', function(req, res) {
 	var matchedvalue = _.findWhere(todo, {
 		id: input
 	});
-	if (!matchedvalue) {
+db.todo.destroy({where: {
+      Id: input
+    }
+  }).then (function (deletedRows) {
+
+if (deletedRows === 0) {
 		res.status(404).json({
 			"error": "No to do ID "
 		});
 	} else {
+		res.status(204).send();
 		// to Delete
-		todo = _.without(todo, matchedvalue);
-		res.json(matchedvalue);
+		//todo = _.without(todo, matchedvalue);
 	}
+}, function () {
+		res.status(500).send();
+
+
+  });
+
 });
 
 // Update API
@@ -123,25 +134,7 @@ console.log('WHERE' , where);
 	}, function(e)  {
 		res.status(500).send();
 	});
-	// if (queryParams.hasOwnProperty('status') && queryParams.status === 'true') {
-	// 	filteredTodos = _.where(filteredTodos, {
-	// 		status: true
-	// 	})
-	// } else if (queryParams.hasOwnProperty('status') && queryParams.status === 'false') {
-	// 	filteredTodos = _.where(filteredTodos, {
-	// 		status: false
-	// 	})
-	// }
-	// console.log('TO DO VALUE', filteredTodos);
 
-	// if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0) {
-	// 	//	console.log('IN IF Q P') ;
-	// 	filteredTodos = _.filter(filteredTodos, function(num) {
-	// 		//	console.log('in Query', num);
-	// 		return num.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
-	// 	});
-// 	}
-// 	res.json(filteredTodos);
 
  });
 
