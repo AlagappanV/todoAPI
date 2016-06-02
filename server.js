@@ -33,6 +33,23 @@ app.post('/', function(req, res) {
 
 });
 
+//USERS
+app.post('/users', function(req, res) {
+	var body = req.body;
+	// to remove unwanted fields if added through post
+	body = _.pick(req.body, 'emailID', 'password');
+	
+	db.user.create(body).then(function(todo) {
+				if(todo) {
+					res.json(todo.toJSON());
+				} else {
+					res.status(400).json('ERROR');
+				}
+				
+			});
+
+});
+
 app.get('/todo/:id', function(req, res) {
 	var input = parseInt(req.params.id, 10);
 
